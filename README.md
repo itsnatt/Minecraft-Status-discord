@@ -6,12 +6,12 @@
 - https://www.hostinger.co.id/tutorial/node-js-adalah - Refrensi install nodejs
 
 PASANG LIBLARY (KALO G BISA ABIS DOWNLOAD DARI GIT)
-- npm install node-mcstatus
-- npm install express
-- npm install discord.js
+- `npm install node-mcstatus`
+- `npm install express`
+- `npm install discord.js`
 
 BUAT START :
- node index.js
+ `node index.js`
 main kode ada di index.js
 
 buat belajar git pull git fetch git push 
