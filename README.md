@@ -10,5 +10,9 @@ PASANG LIBLARY (KALO G BISA ABIS DOWNLOAD DARI GIT)
 - npm install express
 - npm install discord.js
 
-BUAT START
-node index.js
+BUAT START :
+ node index.js
+main kode ada di index.js
+
+buat belajar git pull git fetch git push 
+
