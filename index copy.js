@@ -31,14 +31,14 @@ client.on('ready', () => {
     }
   });
   
-const token = 'MTE1OTg3OTM1NTQ0MzQ2NjM4MQ.GSUbbW.WZhdBJ-m811X2gS95pgctFsCUQetnf4toNUJjI';
+const token = '';
 client.login(token);
 
 const mcs = require('node-mcstatus');
 
 // ...
 
-const host = '122.248.43.86';
+const host = '';
 const port = 2014;
 const options = { query: true };
 

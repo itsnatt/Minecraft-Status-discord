@@ -3,6 +3,14 @@ const express = require("express");
 const app = express();
 const mcs = require('node-mcstatus');
 
+const fs = require('fs');
+const config = require('./config.json');
+
+const discordToken = config.discordToken;
+const minecraftHost = config.minecraftHost;
+const minecraftPort = config.minecraftPort;
+const minecraftOptions = { query: true };
+
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({
   intents: [
@@ -24,9 +32,8 @@ var listener = app.listen(process.env.PORT || 3000, function () {
     console.log("Your app is listening on port " + listener.address().port);
 });
 
-const minecraftHost = '122.248.43.86';
-const minecraftPort = 2014;
-const minecraftOptions = { query: true };
+
+
 
 
 client.on('ready', () => {
@@ -76,5 +83,5 @@ client.on('messageCreate', async message => {
     }
 });
 
-const token = 'MTE1OTg3OTM1NTQ0MzQ2NjM4MQ.GSUbbW.WZhdBJ-m811X2gS95pgctFsCUQetnf4toNUJjI';
-client.login(token);
+
+client.login(discordToken);
