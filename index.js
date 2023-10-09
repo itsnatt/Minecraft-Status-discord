@@ -41,7 +41,7 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', async message => {
-    if (message.content === '.getstatus') { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
+    if (message.content === '.getstatuscuki') { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
         try {
             const result = await mcs.statusJava(minecraftHost, minecraftPort, minecraftOptions);
             const isOnline = result.online;
