@@ -143,7 +143,7 @@ client.on('messageCreate', async message => {
 
 
 // Tentukan saluran di mana Anda ingin mengirim status Minecraft
-const channelId = '1159450250872893480';
+const channelId = '1162330943063871559';
 // Tentukan interval waktu dalam milidetik (misalnya, setiap 5 menit)
 const interval = 30000; // 300000 milidetik = 5 menit
 let previousIsOnline = true;
