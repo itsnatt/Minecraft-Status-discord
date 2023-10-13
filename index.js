@@ -47,8 +47,8 @@ client.on('messageCreate', async message => {
         try {
             const result = await mcs.statusJava(minecraftHost, minecraftPort, minecraftOptions);
             const isOnline = result.online;
-            const host = result.host;
-            const port = result.port;
+            const host = result.host.toString();
+            const port = result.port.toString();
     
             const serverVersionFull = result.version.name_raw;
             const match = serverVersionFull.match(/\d+\.\d+\.\d+/);
@@ -56,28 +56,44 @@ client.on('messageCreate', async message => {
     
             const onlinePlayers = result.players.online;
             const maxPlayers = result.players.max;
+            const onlinePlayerText = `${onlinePlayers.toString().padStart(3, '0')}/${maxPlayers.toString()}`;
+
             const playerList = result.players.list;
     
             let playerNames = 'No players online.';
             if (playerList.length > 0) {
-                playerNames = 'Online Player(s):\n';
+                playerNames = '';
                 playerList.forEach((player) => {
                     const cleanedName = player.name_clean;
-                    playerNames += `Player Name: ${cleanedName}\n`;
+                    playerNames += `- ${cleanedName}\n`;
                 });
             }
     
-            const statusMessage = `
-            Server Status: ${isOnline ? 'Online' : 'Offline'}
-            Host: ${host}
-            Port: ${port}
-            Server Version: java - ${serverVersion}
-            Max Players: ${maxPlayers}
-            Online Players: ${onlinePlayers}
-            ${playerNames}
-            `;
-    
-            message.reply(statusMessage);
+            const exampleEmbed = new EmbedBuilder() 
+            .setColor(isOnline ? '#00FF00' : '#FF0000')
+            .setTitle('GPLB MINECRAFT SERVER STATUS')
+            .setURL('https://www.youtube.com/watch?v=xvFZjo5PgG0')
+            .setAuthor({ name: 'Rehan wangsaf', iconURL: 'https://static.promediateknologi.id/crop/13x14:698x534/750x500/webp/photo/2023/06/20/a9e8e0d3-664a-4ae2-9e05-ef514058b992-3911330728.jpg'})
+            //.setDescription('Some description here')
+            .setThumbnail('https://cdn.discordapp.com/icons/1154025467100274688/e6e6c56200f33432444071a4715948ab.webp?size=128')
+            .addFields(
+                { name: 'Status', value: isOnline ? 'Online' : 'Offline', inline: true },
+                { name: 'Online Player ', value: onlinePlayerText, inline: true },
+                { name: 'Online Players', value: playerNames },
+                { name: 'Host', value: host,inline: true  },
+                { name: 'Port', value: port , inline: true },
+                { name: 'Version', value: serverVersion.toString() , inline: true },
+            )
+            
+            
+
+            //.addFields({ name: 'Inline field title', value: 'Some value here' })
+            //.setImage('https://i.imgur.com/AfFp7pu.png')
+            .setTimestamp()
+            //.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+        
+            message.reply({ embeds: [exampleEmbed] });
+
         } catch (error) {
             console.error('Error:', error);
             message.reply('Cannot connect to Minecraft Server');
@@ -87,8 +103,8 @@ client.on('messageCreate', async message => {
         try {
             
             const input = message.content.slice(PREFIX.length).trim();
-            const match = input.match(/(\d+)\.(\d+)\.(\d+)/);
-            if (match) {
+            const matchh = input.match(/(\d+)\.(\d+)\.(\d+)/);
+            if (matchh) {
                 const year = match[1]; // Mengambil tahun
                 const imageUrl = `https://fotomhs.amikom.ac.id/20${year}/${input.replace(/\./g, '_')}.jpg`;
           
@@ -126,4 +142,72 @@ client.on('messageCreate', async message => {
 });
 
 
+// Tentukan saluran di mana Anda ingin mengirim status Minecraft
+const channelId = '1159450250872893480';
+// Tentukan interval waktu dalam milidetik (misalnya, setiap 5 menit)
+const interval = 30000; // 300000 milidetik = 5 menit
+let previousIsOnline = true;
+let previousOnlinePlayers = 1;
+
+const sendMinecraftStatus = async () => {
+    try {
+        const result = await mcs.statusJava(minecraftHost, minecraftPort, minecraftOptions);
+        const isOnline = result.online;
+        const host = result.host.toString();
+        const port = result.port.toString();
+        const serverVersionFull = result.version.name_raw;
+        const match = serverVersionFull.match(/\d+\.\d+\.\d+/);
+        const serverVersion = match ? match[0] : 'N/A';
+        const onlinePlayers = result.players.online;
+        const maxPlayers = result.players.max;
+        const onlinePlayerText = `${onlinePlayers.toString().padStart(3, '0')}/${maxPlayers.toString()}`;
+        const playerList = result.players.list;
+
+        let playerNames = 'No players online.';
+        if (playerList.length > 0) {
+            playerNames = '';
+            playerList.forEach((player) => {
+                const cleanedName = player.name_clean;
+                playerNames += `- ${cleanedName}\n`;
+            });
+        }
+
+        // Cek perubahan
+        if (isOnline !== previousIsOnline || onlinePlayers !== previousOnlinePlayers) {
+            // Buat embed Discord
+            const exampleEmbed = new EmbedBuilder()
+                .setColor(isOnline ? '#00FF00' : '#FF0000')
+                .setTitle('GPLB MINECRAFT SERVER STATUS')
+                .setURL('https://www.youtube.com/watch?v=xvFZjo5PgG0')
+                .setAuthor({ name: 'Rehan wangsaf', iconURL: 'https://static.promediateknologi.id/crop/13x14:698x534/750x500/webp/photo/2023/06/20/a9e8e0d3-664a-4ae2-9e05-ef514058b992-3911330728.jpg' })
+                .setThumbnail('https://cdn.discordapp.com/icons/1154025467100274688/e6e6c56200f33432444071a4715948ab.webp?size=128')
+                .addFields(
+                    { name: 'Status', value: isOnline ? 'Online' : 'Offline', inline: true },
+                    { name: 'Online Player ', value: onlinePlayerText, inline: true },
+                    { name: 'Online Players', value: playerNames },
+                    { name: 'Host', value: host, inline: true },
+                    { name: 'Port', value: port, inline: true },
+                    { name: 'Version', value: serverVersion.toString(), inline: true },
+                )
+                .setTimestamp();
+
+            // Dapatkan saluran berdasarkan ID
+            const channel = client.channels.cache.get(channelId);
+
+            // Kirim pesan ke saluran
+            channel.send({ embeds: [exampleEmbed] });
+
+            // Perbarui nilai-nilai sebelumnya
+            previousIsOnline = isOnline;
+            previousOnlinePlayers = onlinePlayers;
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        // Jika terjadi kesalahan, Anda dapat menambahkan tindakan lain di sini
+    }
+};
+
+// Jalankan fungsi setiap interval tertentu
+setInterval(sendMinecraftStatus, interval);
 client.login(discordToken);
