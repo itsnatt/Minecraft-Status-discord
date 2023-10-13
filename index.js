@@ -11,7 +11,7 @@ const minecraftHost = config.minecraftHost;
 const minecraftPort = config.minecraftPort;
 const minecraftOptions = { query: true };
 
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const client = new Client({
   intents: [
     GatewayIntentBits.DirectMessages,
@@ -39,6 +39,8 @@ var listener = app.listen(process.env.PORT || 3000, function () {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
+
+const PREFIX = '.lookthis ';
 
 client.on('messageCreate', async message => {
     if (message.content === '.getstatuscuki') { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
@@ -79,6 +81,46 @@ client.on('messageCreate', async message => {
         } catch (error) {
             console.error('Error:', error);
             message.reply('Cannot connect to Minecraft Server');
+        }
+    }
+    if (message.content.startsWith(PREFIX)) { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
+        try {
+            
+            const input = message.content.slice(PREFIX.length).trim();
+            const match = input.match(/(\d+)\.(\d+)\.(\d+)/);
+            if (match) {
+                const year = match[1]; // Mengambil tahun
+                const imageUrl = `https://fotomhs.amikom.ac.id/20${year}/${input.replace(/\./g, '_')}.jpg`;
+          
+                // Melakukan permintaan HTTP HEAD untuk memeriksa status gambar
+                fetch(imageUrl, { method: 'HEAD' })
+                  .then(response => {
+                    if (response.status === 200) {
+                      const embed = new EmbedBuilder()
+                        .setTitle('Gambar yang Anda minta:')
+                        .setImage(imageUrl);
+          
+                      // Kirim pesan dengan gambar
+                      message.reply({ embeds: [embed] });
+                    } else {
+                      message.reply('Gambar tidak ditemukan.');
+                    }
+                  })
+                  .catch(error => {
+                    console.error('Error:', error);
+                    message.reply('Terjadi kesalahan saat memeriksa gambar.');
+                  });
+              } else {
+                message.reply('Format input tidak valid. Gunakan format "tahun.bulan.tanggal" seperti "22.11.3847".');
+              }
+            
+        
+        
+            
+           
+        } catch (error) {
+            console.error('Error:', error);
+            message.reply('lol not work');
         }
     }
 });
