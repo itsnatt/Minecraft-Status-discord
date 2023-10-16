@@ -40,7 +40,8 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-const PREFIX = '.lookthis ';
+const PREFIX = '.amikom ';
+const PREFIX2 = '.unesa ';
 
 client.on('messageCreate', async message => {
     if (message.content === '.getstatuscuki') { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
@@ -48,7 +49,7 @@ client.on('messageCreate', async message => {
             const result = await mcs.statusJava(minecraftHost, minecraftPort, minecraftOptions);
             const isOnline = result.online;
             const host = result.host.toString();
-            const port = result.port.toString();
+            const port = result.port.toString();    
     
             const serverVersionFull = result.version.name_raw;
             const match = serverVersionFull.match(/\d+\.\d+\.\d+/);
@@ -103,8 +104,8 @@ client.on('messageCreate', async message => {
         try {
             
             const input = message.content.slice(PREFIX.length).trim();
-            const matchh = input.match(/(\d+)\.(\d+)\.(\d+)/);
-            if (matchh) {
+            const match = input.match(/(\d+)\.(\d+)\.(\d+)/);
+            if (match) {
                 const year = match[1]; // Mengambil tahun
                 const imageUrl = `https://fotomhs.amikom.ac.id/20${year}/${input.replace(/\./g, '_')}.jpg`;
           
@@ -127,25 +128,56 @@ client.on('messageCreate', async message => {
                     message.reply('Terjadi kesalahan saat memeriksa gambar.');
                   });
               } else {
-                message.reply('Format input tidak valid. Gunakan format "tahun.bulan.tanggal" seperti "22.11.3847".');
+                message.reply('Format input tidak valid. Gunakan format seperti "22.12.123".');
               }
-            
-        
-        
-            
            
         } catch (error) {
             console.error('Error:', error);
             message.reply('lol not work');
         }
     }
+    if (message.content.startsWith(PREFIX2)) { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
+        if (message.content.startsWith(PREFIX2)) { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
+            try {
+              const nim2 = message.content.slice(PREFIX2.length).trim();
+          
+              if (nim2.length === 11) { // Ubah 11 menjadi panjang yang sesuai
+                const imageUrl = `https://siakadu.unesa.ac.id/photo/fotomhs/${nim2}.jpg`;
+          
+                // Melakukan permintaan HTTP HEAD untuk memeriksa status gambar
+                fetch(imageUrl, { method: 'HEAD' })
+                  .then(response => {
+                    if (response.status === 200) {
+                      const embed = new EmbedBuilder()
+                        .setTitle('Gambar yang Anda minta:')
+                        .setImage(imageUrl);
+          
+                      // Kirim pesan dengan gambar
+                      message.reply({ embeds: [embed] });
+                    } else {
+                      message.reply('Gambar tidak ditemukan.');
+                    }
+                  })
+                  .catch(error => {
+                    console.error('Error:', error);
+                    message.reply('Terjadi kesalahan saat memeriksa gambar.');
+                  });
+              } else {
+                message.reply('Format input tidak valid. Gunakan format seperti "17010041234".');
+              }
+            } catch (error) {
+              console.error('Error:', error);
+              message.reply('Terjadi kesalahan saat memeriksa gambar.');
+            }
+          }
+        }
 });
 
 
 // Tentukan saluran di mana Anda ingin mengirim status Minecraft
 const channelId = '1162330943063871559';
 // Tentukan interval waktu dalam milidetik (misalnya, setiap 5 menit)
-const interval = 30000; // 300000 milidetik = 5 menit
+const interval = 60000; // 300000 milidetik = 5 menit
 let previousIsOnline = true;
 let previousOnlinePlayers = 1;
 
