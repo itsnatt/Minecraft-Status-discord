@@ -40,11 +40,9 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-const PREFIX = '.amikom ';
-const PREFIX2 = '.unesa ';
 
 client.on('messageCreate', async message => {
-    if (message.content === '.getstatuscuki') { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
+    if (message.content === '.mcinfo') { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
         try {
             const result = await mcs.statusJava(minecraftHost, minecraftPort, minecraftOptions);
             const isOnline = result.online;
@@ -85,97 +83,22 @@ client.on('messageCreate', async message => {
                 { name: 'Port', value: port , inline: true },
                 { name: 'Version', value: serverVersion.toString() , inline: true },
             )
-            
-            
-
             //.addFields({ name: 'Inline field title', value: 'Some value here' })
             //.setImage('https://i.imgur.com/AfFp7pu.png')
             .setTimestamp()
             //.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
-        
             message.reply({ embeds: [exampleEmbed] });
-
         } catch (error) {
             console.error('Error:', error);
             message.reply('Cannot connect to Minecraft Server');
         }
     }
-    if (message.content.startsWith(PREFIX)) { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
-        try {
-            
-            const input = message.content.slice(PREFIX.length).trim();
-            const match = input.match(/(\d+)\.(\d+)\.(\d+)/);
-            if (match) {
-                const year = match[1]; // Mengambil tahun
-                const imageUrl = `https://fotomhs.amikom.ac.id/20${year}/${input.replace(/\./g, '_')}.jpg`;
-          
-                // Melakukan permintaan HTTP HEAD untuk memeriksa status gambar
-                fetch(imageUrl, { method: 'HEAD' })
-                  .then(response => {
-                    if (response.status === 200) {
-                      const embed = new EmbedBuilder()
-                        .setTitle('Gambar yang Anda minta:')
-                        .setImage(imageUrl);
-          
-                      // Kirim pesan dengan gambar
-                      message.reply({ embeds: [embed] });
-                    } else {
-                      message.reply('Gambar tidak ditemukan.');
-                    }
-                  })
-                  .catch(error => {
-                    console.error('Error:', error);
-                    message.reply('Terjadi kesalahan saat memeriksa gambar.');
-                  });
-              } else {
-                message.reply('Format input tidak valid. Gunakan format seperti "22.12.123".');
-              }
-           
-        } catch (error) {
-            console.error('Error:', error);
-            message.reply('lol not work');
-        }
-    }
-    if (message.content.startsWith(PREFIX2)) { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
-        if (message.content.startsWith(PREFIX2)) { // Anda dapat mengganti pesan pemicu sesuai keinginan Anda
-            try {
-              const nim2 = message.content.slice(PREFIX2.length).trim();
-          
-              if (nim2.length === 11) { // Ubah 11 menjadi panjang yang sesuai
-                const imageUrl = `https://siakadu.unesa.ac.id/photo/fotomhs/${nim2}.jpg`;
-          
-                // Melakukan permintaan HTTP HEAD untuk memeriksa status gambar
-                fetch(imageUrl, { method: 'HEAD' })
-                  .then(response => {
-                    if (response.status === 200) {
-                      const embed = new EmbedBuilder()
-                        .setTitle('Gambar yang Anda minta:')
-                        .setImage(imageUrl);
-          
-                      // Kirim pesan dengan gambar
-                      message.reply({ embeds: [embed] });
-                    } else {
-                      message.reply('Gambar tidak ditemukan.');
-                    }
-                  })
-                  .catch(error => {
-                    console.error('Error:', error);
-                    message.reply('Terjadi kesalahan saat memeriksa gambar.');
-                  });
-              } else {
-                message.reply('Format input tidak valid. Gunakan format seperti "17010041234".');
-              }
-            } catch (error) {
-              console.error('Error:', error);
-              message.reply('Terjadi kesalahan saat memeriksa gambar.');
-            }
-          }
-        }
+   
 });
 
 
 // Tentukan saluran di mana Anda ingin mengirim status Minecraft
-const channelId = '1162330943063871559';
+const channelId = '11623309430638715xx';
 // Tentukan interval waktu dalam milidetik (misalnya, setiap 5 menit)
 const interval = 60000; // 300000 milidetik = 5 menit
 let previousIsOnline = true;
